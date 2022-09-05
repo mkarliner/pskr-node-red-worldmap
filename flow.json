@@ -1,1 +1,240 @@
-[]
+[
+    {
+        "id": "20ee356d9df171ad",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e5e47f578b5d9309",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "7618267118233f08",
+        "type": "mqtt-broker",
+        "name": "Tom",
+        "broker": "67.207.77.99",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "cf6d276715b0b074",
+        "type": "debug",
+        "z": "e5e47f578b5d9309",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "ba1a67d6bc702446",
+        "type": "mqtt in",
+        "z": "e5e47f578b5d9309",
+        "name": "",
+        "topic": "pskr/tx/G8LKD",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "7618267118233f08",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 100,
+        "wires": [
+            [
+                "01224aefe9b8592d"
+            ]
+        ]
+    },
+    {
+        "id": "450a3bf64e1907ab",
+        "type": "function",
+        "z": "e5e47f578b5d9309",
+        "name": "function 1",
+        "func": "country = msg.payload.receiverCountryName;\ncallsign = msg.payload.receiverCallsign;\n// msg.payload = country + \" - \" + callsign\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 100,
+        "wires": [
+            [
+                "cf6d276715b0b074"
+            ]
+        ]
+    },
+    {
+        "id": "5b87150df0a69aa9",
+        "type": "mqtt in",
+        "z": "e5e47f578b5d9309",
+        "name": "",
+        "topic": "pskr/rx/G8LKD",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "7618267118233f08",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 200,
+        "y": 280,
+        "wires": [
+            [
+                "01224aefe9b8592d"
+            ]
+        ]
+    },
+    {
+        "id": "01224aefe9b8592d",
+        "type": "function",
+        "z": "e5e47f578b5d9309",
+        "name": "Map Details",
+        "func": "country = msg.payload.senderCountryName;\nlabel = msg.payload.receiverCallsign + \" - \" + msg.payload.senderCallsign;\nname = msg.payload.sequenceNumber.toString();\n// msg.payload = country + \" - \" + callsign\n// lat = 50\n// lon = 0\nvar iconColor = \"grey\"\nvar icon = \"ear-listen\"\ngrid = msg.payload.receiverLocator.substring(0,4).toUpperCase()\nconsole.log(grid)\nswitch(msg.payload.band) {\n    case \"10m\":\n    iconColor = \"pink\"\n    break\n    case \"15m\":\n    iconColor = \"purple\"\n    break\n    case \"17m\":\n    iconColor = \"yellow\"\n    break\n    case \"20m\":\n    iconColor = \"orange\"\n    break\n    case \"30m\":\n    iconColor = \"green\"\n    break\n    case \"40m\":\n    iconColor = \"blue\"\n    break\n}\nif(grid == \"IO91\") {\n    icon = \"fa-arrow-circle-o-left\"\n    grid = msg.payload.senderLocator.substring(0,4).toUpperCase()\n} else {\n    icon = \"fa-arrow-circle-o-right\"\n}\n\npayload = {\n    name: name,\n    grid: grid,\n    tooltip: label,\n    iconColor: iconColor,\n    icon: icon\n    // lat: lat,\n    // lon: lon\n}\nmsg.payload = payload\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 200,
+        "wires": [
+            [
+                "55c9d6612a79326c"
+            ]
+        ]
+    },
+    {
+        "id": "f6c388274fd8edf4",
+        "type": "mqtt in",
+        "z": "e5e47f578b5d9309",
+        "name": "",
+        "topic": "pskr/filter/+/+/+/+/IO91/#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "7618267118233f08",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 160,
+        "wires": [
+            [
+                "01224aefe9b8592d"
+            ]
+        ]
+    },
+    {
+        "id": "a5bc947532833dd6",
+        "type": "inject",
+        "z": "e5e47f578b5d9309",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"name\":\"Joe\", \"lat\":51, \"lon\":-1.05}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "55c9d6612a79326c",
+        "type": "function",
+        "z": "e5e47f578b5d9309",
+        "name": "MaidenheadtoLL",
+        "func": "/* Get the latitude and longitude for a Maidenhead (grid square) Locator.\n *\n * This function takes a single string parameter that is a Maidenhead (grid\n * square) Locator. It must be 4 or 6 characters in length and of the format.\n * * 4-character: `^[A-X][A-X][0-9][0-9]$`\n * * 6-character: `^[A-X][A-X][0-9][0-9][a-x][a-x]$`\n * * 8-character: `^[A-X][A-X][0-9][0-9][a-x][a-x][0-9][0-9]$` (not supported).\n * \n * Returns an array of floating point numbers `[latitude, longitude]`.\n */\nfunction latLonForGrid(grid) {\n\tvar lat = 0.0;\n\tvar lon = 0.0;\n\t\n\tfunction lat4(g){\n\t\treturn 10 * (g.charCodeAt(1) - 'A'.charCodeAt(0)) + parseInt(g.charAt(3)) - 90;\n\t}\n\t\n\tfunction lon4(g){\n\t\treturn 20 * (g.charCodeAt(0) - 'A'.charCodeAt(0)) + 2 * parseInt(g.charAt(2)) - 180;\n\t}\n\n\tif ((grid.length != 4) && (grid.length != 6)) {\n\t\tthrow \"grid square: grid must be 4 or 6 chars: \" + grid;\n\t}\n\n\tif (/^[A-X][A-X][0-9][0-9]$/.test(grid)) {\n\t\t// Decode 4-character grid square\n\t\tlat = lat4(grid) + 0.5;\n\t\tlon = lon4(grid) + 1;\n\t} else if (/^[A-X][A-X][0-9][0-9][a-x][a-x]$/.test(grid)) {\n\t\t// Decode 6-character grid square\n\t\tlat = lat4(grid) + (1.0 / 60.0) * 2.5 * (grid.charCodeAt(5) - 'a'.charCodeAt(0) + 0.5);\n\t\tlon = lon4(grid) + (1.0 / 60.0) * 5 * (grid.charCodeAt(4) - 'a'.charCodeAt(0) + 0.5);\n\t} else {\n\t\tthrow \"gridSquareToLatLon: invalid grid: \" + grid;\n\t}\n\n\treturn [lat, lon];\n}\nll = latLonForGrid(msg.payload.grid)\nmsg.payload.lat = ll[0]\nmsg.payload.lon = ll[1]\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 440,
+        "wires": [
+            [
+                "5101b11e0afe0510"
+            ]
+        ]
+    },
+    {
+        "id": "5101b11e0afe0510",
+        "type": "worldmap",
+        "z": "e5e47f578b5d9309",
+        "name": "",
+        "lat": "50",
+        "lon": "0",
+        "zoom": "",
+        "layer": "OSMC",
+        "cluster": "",
+        "maxage": "60",
+        "usermenu": "show",
+        "layers": "show",
+        "panit": "true",
+        "panlock": "false",
+        "zoomlock": "false",
+        "hiderightclick": "false",
+        "coords": "none",
+        "showgrid": "false",
+        "allowFileDrop": "false",
+        "path": "/worldmap",
+        "overlist": "DR,CO",
+        "maplist": "OSMC",
+        "mapname": "",
+        "mapurl": "",
+        "mapopt": "",
+        "mapwms": false,
+        "x": 760,
+        "y": 360,
+        "wires": []
+    }
+]
