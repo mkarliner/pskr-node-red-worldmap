@@ -8,6 +8,8 @@ and generates a real-time map of reports. As published, it shows reports
 for the grid square IO91, but this is easily changed by changing the topic 
 pattern.
 
+A demo is available at http://worldmap.modern-industry.com (most of the time)
+
 The map will be accessible at <your host>:1880/worldmap. Editing the flow is a
 <your host>:1880
 
