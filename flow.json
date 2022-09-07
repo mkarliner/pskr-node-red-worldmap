@@ -10,7 +10,7 @@
     {
         "id": "e5e47f578b5d9309",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "PSKR Live Map IO91",
         "disabled": false,
         "info": "",
         "env": []
@@ -81,25 +81,6 @@
         ]
     },
     {
-        "id": "450a3bf64e1907ab",
-        "type": "function",
-        "z": "e5e47f578b5d9309",
-        "name": "function 1",
-        "func": "country = msg.payload.receiverCountryName;\ncallsign = msg.payload.receiverCallsign;\n// msg.payload = country + \" - \" + callsign\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 480,
-        "y": 100,
-        "wires": [
-            [
-                "cf6d276715b0b074"
-            ]
-        ]
-    },
-    {
         "id": "5b87150df0a69aa9",
         "type": "mqtt in",
         "z": "e5e47f578b5d9309",
@@ -135,7 +116,8 @@
         "y": 200,
         "wires": [
             [
-                "55c9d6612a79326c"
+                "55c9d6612a79326c",
+                "cf6d276715b0b074"
             ]
         ]
     },
@@ -158,33 +140,6 @@
             [
                 "01224aefe9b8592d"
             ]
-        ]
-    },
-    {
-        "id": "a5bc947532833dd6",
-        "type": "inject",
-        "z": "e5e47f578b5d9309",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"name\":\"Joe\", \"lat\":51, \"lon\":-1.05}",
-        "payloadType": "json",
-        "x": 170,
-        "y": 360,
-        "wires": [
-            []
         ]
     },
     {
@@ -213,13 +168,13 @@
         "name": "",
         "lat": "50",
         "lon": "0",
-        "zoom": "",
+        "zoom": "2",
         "layer": "OSMC",
         "cluster": "",
         "maxage": "60",
         "usermenu": "show",
         "layers": "show",
-        "panit": "true",
+        "panit": "false",
         "panlock": "false",
         "zoomlock": "false",
         "hiderightclick": "false",
